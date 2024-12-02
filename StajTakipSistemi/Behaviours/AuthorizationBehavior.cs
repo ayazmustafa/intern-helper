@@ -1,6 +1,7 @@
 using System.Reflection;
 using MediatR;
 using StajTakipSistemi.Authentication;
+using StajTakipSistemi.Exceptions;
 using AuthorizeAttribute = StajTakipSistemi.Authentication.AuthorizeAttribute;
 
 namespace StajTakipSistemi.Behaviours;
@@ -38,7 +39,7 @@ public class AuthorizationBehavior<TRequest, TResponse>
 
         if (requiredPermissions.Except(currentUser.Permissions).Any())
         {
-            throw new Exception("User is forbidden from taking this action");
+            throw new UnauthroizedException("User is forbidden from taking this action");
         }
 
         var requiredRoles = authorizationAttributes
@@ -47,7 +48,7 @@ public class AuthorizationBehavior<TRequest, TResponse>
 
         if (requiredRoles.Except(currentUser.Roles).Any())
         {
-            throw new Exception("User is forbidden from taking this action");
+            throw new UnauthroizedException("User is forbidden from taking this action");
         }
 
         return await next();

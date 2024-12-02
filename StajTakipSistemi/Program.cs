@@ -49,7 +49,7 @@ builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.Authenticati
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(jwtSettings.Secret)),
     });
-// builder.Services.AddAuthorization();
+builder.Services.AddAuthorization();
 // JWT
 
 // Metiatr

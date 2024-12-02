@@ -6,7 +6,6 @@ using StajTakipSistemi.Repositories;
 
 namespace StajTakipSistemi.Business.Authentication;
 
-[Authorize(Roles = "admin")]
 public record LoginQuery(
     string Email,
     string Password) : IRequest<AuthenticationResult>;
@@ -29,8 +28,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthenticationResul
     
     public async Task<AuthenticationResult> Handle(LoginQuery query, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailAsync(query.Email);
-        // var user = await _userRepository.GetByEmailWithRolesAsync(query.Email);
+        // var user = await _userRepository.GetByEmailAsync(query.Email);
+        var user = await _userRepository.GetByEmailWithRolesAsync(query.Email);
 
         return user is null || !user.IsCorrectPasswordHash(query.Password, _passwordHasher)
             ? throw new Exception("Invalid credentials")

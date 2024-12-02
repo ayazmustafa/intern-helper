@@ -30,7 +30,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new(JwtRegisteredClaimNames.Name, user.FirstName),
             new("last_name", user.LastName),
             new(JwtRegisteredClaimNames.Email, user.Email),
-            // new("role", user.UserRoles.FirstOrDefault()?.Role.Title)
+            new("role", user.UserRoles.FirstOrDefault()?.Role.Title)
         };
 
         // AddIds(user, claims);

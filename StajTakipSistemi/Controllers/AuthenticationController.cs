@@ -38,8 +38,18 @@ public class AuthenticationController: ApiController
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var selam = _currentUserProvider.GetCurrentUser();
         var query = new LoginQuery(request.Email, request.Password);
+
+        var authResult = await _mediator.Send(query);
+        // map top response, check bottom
+
+        return Ok(authResult);
+    }
+    
+    [HttpPost("login2")]
+    public async Task<IActionResult> Login2([FromBody] LoginRequest request)
+    {
+        var query = new LoginQuery2(request.Email, request.Password);
 
         var authResult = await _mediator.Send(query);
         // map top response, check bottom
