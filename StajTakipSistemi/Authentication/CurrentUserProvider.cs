@@ -11,6 +11,7 @@ public class CurrentUserProvider : ICurrentUserProvider
     {
         _httpContextAccessor = httpContextAccessor;
     }
+
     public CurrentUser GetCurrentUser()
     {
         if (_httpContextAccessor.HttpContext is null)
@@ -25,7 +26,10 @@ public class CurrentUserProvider : ICurrentUserProvider
         // var permissions = GetClaimValues("permissions");
         var roles = GetClaimValues("role");
 
-        return new CurrentUser(Id: id, Permissions: new List<string>(), Roles: roles);
+        return new CurrentUser(
+            Id: id,
+            Permissions: new List<string>(),
+            Roles: roles);
     }
 
     private IReadOnlyList<string> GetClaimValues(string claimType)

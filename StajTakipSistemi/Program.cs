@@ -10,18 +10,18 @@ using StajTakipSistemi.Authentication.TokenGenerator;
 using StajTakipSistemi.Behaviours;
 using StajTakipSistemi.Database;
 using StajTakipSistemi.Middleware;
-using StajTakipSistemi.Repositories;
+using StajTakipSistemi.Repositories.HistoryRepository;
+using StajTakipSistemi.Repositories.InternshipFormRepository;
+using StajTakipSistemi.Repositories.RoleRepository;
+using StajTakipSistemi.Repositories.UserRepository;
+using StajTakipSistemi.Repositories.UserRoleRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-    });
+builder.Services.AddControllers();
 
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -66,6 +66,10 @@ builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
 // Repository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IInternshipFormRepository, InternshipFormRepository>();
+builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 // Repository
 
 // User Context

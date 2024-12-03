@@ -1,6 +1,6 @@
 using StajTakipSistemi.Models;
 
-namespace StajTakipSistemi.Business.Authentication;
+namespace StajTakipSistemi.Business.AuthenticationBusiness;
 
 public record AuthenticationResult(
     User User,

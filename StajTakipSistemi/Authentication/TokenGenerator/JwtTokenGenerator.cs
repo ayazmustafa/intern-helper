@@ -1,8 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using StajTakipSistemi.Database;
 using StajTakipSistemi.Models;
 using StajTakipSistemi.Repositories;
 
@@ -11,11 +13,13 @@ namespace StajTakipSistemi.Authentication.TokenGenerator;
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
     private readonly JwtSettings _jwtSettings;
+    private readonly IServiceProvider _serviceProvider;
 
     public JwtTokenGenerator(
-        IOptions<JwtSettings> jwtOptions
-        )
+        IOptions<JwtSettings> jwtOptions, 
+        IServiceProvider serviceProvider)
     {
+        _serviceProvider = serviceProvider;
         _jwtSettings = jwtOptions.Value;
     }
 
@@ -24,13 +28,17 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+
+
+
+
         var claims = new List<Claim>
         {
             new("id", user.Id.ToString()),
             new(JwtRegisteredClaimNames.Name, user.FirstName),
             new("last_name", user.LastName),
             new(JwtRegisteredClaimNames.Email, user.Email),
-            new("role", user.UserRoles.FirstOrDefault()?.Role.Title)
+            new("role", user.UserRoles.FirstOrDefault()?.Role.Title),
         };
 
         // AddIds(user, claims);
@@ -43,9 +51,9 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             expires: DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes),
             signingCredentials: credentials
         );
-        
-        
-        
+
+
+
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 

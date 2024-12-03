@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using StajTakipSistemi.Authentication;
 using StajTakipSistemi.Business.Authentication;
+using StajTakipSistemi.Business.AuthenticationBusiness;
 using StajTakipSistemi.Controllers.Base;
 using StajTakipSistemi.Models;
 
@@ -13,12 +14,10 @@ namespace StajTakipSistemi.Controllers;
 public class AuthenticationController: ApiController
 {
     private readonly ISender _mediator;
-    private readonly ICurrentUserProvider _currentUserProvider;
 
     public AuthenticationController(ISender mediator, ICurrentUserProvider currentUserProvider)
     {
         _mediator = mediator;
-        _currentUserProvider = currentUserProvider;
     }
     
     [HttpPost("register")]
@@ -32,7 +31,7 @@ public class AuthenticationController: ApiController
 
         var authResult = await _mediator.Send(command);
         // map top response, check bottom
-        return Ok(authResult);
+        return Ok(MapToAuthResponse(authResult));
     }
 
     [HttpPost("login")]
@@ -43,28 +42,18 @@ public class AuthenticationController: ApiController
         var authResult = await _mediator.Send(query);
         // map top response, check bottom
 
-        return Ok(authResult);
+        return Ok(MapToAuthResponse(authResult));
     }
     
-    [HttpPost("login2")]
-    public async Task<IActionResult> Login2([FromBody] LoginRequest request)
+
+    private static AuthenticationResponse MapToAuthResponse(AuthenticationResult authResult)
     {
-        var query = new LoginQuery2(request.Email, request.Password);
-
-        var authResult = await _mediator.Send(query);
-        // map top response, check bottom
-
-        return Ok(authResult);
+        return new AuthenticationResponse(
+            authResult.User.Id,
+            authResult.User.FirstName,
+            authResult.User.LastName,
+            authResult.User.Email,
+            authResult.Token);
     }
-
-    // private static AuthenticationResponse MapToAuthResponse(AuthenticationResult authResult)
-    // {
-    //     return new AuthenticationResponse(
-    //         authResult.User.Id,
-    //         authResult.User.FirstName,
-    //         authResult.User.LastName,
-    //         authResult.User.Email,
-    //         authResult.Token);
-    // }
 
 }

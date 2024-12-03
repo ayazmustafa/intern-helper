@@ -2,7 +2,7 @@
 using StajTakipSistemi.Database;
 using StajTakipSistemi.Models;
 
-namespace StajTakipSistemi.Repositories;
+namespace StajTakipSistemi.Repositories.UserRepository;
 
 public class UserRepository : IUserRepository
 {

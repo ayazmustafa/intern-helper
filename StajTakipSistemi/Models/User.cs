@@ -10,6 +10,8 @@ public class User
     public string Email { get; set; } = null!;
     public string Password { get; set; } = null!;
     
+    
+    public History History { get; set; }
     public ICollection<UserRole> UserRoles { get; set; }
 
     public bool IsCorrectPasswordHash(string password, IPasswordHasher passwordHasher)

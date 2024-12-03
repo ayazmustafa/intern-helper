@@ -11,14 +11,19 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     public DbSet<Role> Roles { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     
+    public DbSet<History> Histories { get; set; }
+    public DbSet<InternshipForm> InternshipForms { get; set; }
+    public DbSet<WorkHistory> WorkHistories { get; set; }
+    
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
         
     }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+        
         base.OnModelCreating(modelBuilder);
     }
 

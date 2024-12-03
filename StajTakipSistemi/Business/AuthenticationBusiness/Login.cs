@@ -1,23 +1,21 @@
 using MediatR;
-using StajTakipSistemi.Authentication;
 using StajTakipSistemi.Authentication.PasswordHasher;
 using StajTakipSistemi.Authentication.TokenGenerator;
-using StajTakipSistemi.Repositories;
+using StajTakipSistemi.Repositories.UserRepository;
 
-namespace StajTakipSistemi.Business.Authentication;
+namespace StajTakipSistemi.Business.AuthenticationBusiness;
 
-[Authorize(Roles = "student")]
-public record LoginQuery2(
+public record LoginQuery(
     string Email,
     string Password) : IRequest<AuthenticationResult>;
 
-public class LoginQueryHandler2 : IRequestHandler<LoginQuery2, AuthenticationResult>
+public class Login : IRequestHandler<LoginQuery, AuthenticationResult>
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserRepository _userRepository;
 
-    public LoginQueryHandler2(
+    public Login(
         IJwtTokenGenerator jwtTokenGenerator,
         IPasswordHasher passwordHasher,
         IUserRepository userRepository)
@@ -27,13 +25,13 @@ public class LoginQueryHandler2 : IRequestHandler<LoginQuery2, AuthenticationRes
         _userRepository = userRepository;
     }
     
-    public async Task<AuthenticationResult> Handle(LoginQuery2 query, CancellationToken cancellationToken)
+    public async Task<AuthenticationResult> Handle(LoginQuery query, CancellationToken cancellationToken)
     {
         // var user = await _userRepository.GetByEmailAsync(query.Email);
         var user = await _userRepository.GetByEmailWithRolesAsync(query.Email);
 
         return user is null || !user.IsCorrectPasswordHash(query.Password, _passwordHasher)
             ? throw new Exception("Invalid credentials")
-            : new AuthenticationResult(user, _jwtTokenGenerator.GenerateToken(user));
+            : new AuthenticationResult(user,  _jwtTokenGenerator.GenerateToken(user));
     }
 }

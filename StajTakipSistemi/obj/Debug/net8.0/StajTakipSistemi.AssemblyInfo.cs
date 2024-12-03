@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StajTakipSistemi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f11161727bba67934a93bc0cc71248accb04c97")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e8cc029a75702b8e5bc3c943c1a267f3916fd65a")]
 [assembly: System.Reflection.AssemblyProductAttribute("StajTakipSistemi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StajTakipSistemi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
